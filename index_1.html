@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>jaderoc | Cars, Games & Computers</title>
+<style>
+  :root {
+    --bg: #0f1220;
+    --panel: #181c30;
+    --panel2: #20253f;
+    --text: #e8eaf6;
+    --muted: #9aa0c0;
+    --accent: #ff4d4d;
+    --accent2: #4dd0ff;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+  }
+  header {
+    background: var(--panel);
+    border-bottom: 2px solid var(--accent);
+    position: sticky; top: 0; z-index: 10;
+  }
+  nav {
+    max-width: 960px; margin: 0 auto; padding: 0 16px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .logo { font-weight: 800; letter-spacing: 1px; color: var(--accent); }
+  .tabs { display: flex; gap: 4px; }
+  .tab-btn {
+    background: none; border: none; color: var(--muted);
+    font-size: 1rem; padding: 16px 20px; cursor: pointer;
+    border-bottom: 3px solid transparent;
+  }
+  .tab-btn:hover { color: var(--text); }
+  .tab-btn.active { color: var(--text); border-bottom-color: var(--accent2); }
+  main { max-width: 960px; margin: 0 auto; padding: 32px 16px 64px; }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  /* Hero */
+  .hero {
+    display: flex; gap: 32px; align-items: center; flex-wrap: wrap;
+    background: var(--panel); border-radius: 16px; padding: 28px;
+  }
+  .hero img {
+    width: 300px; max-width: 100%; border-radius: 12px;
+    border: 3px solid var(--accent); object-fit: cover;
+  }
+  .hero h1 { font-size: 2.6rem; line-height: 1.1; }
+  .hero h1 span { color: var(--accent); }
+  .hero p { color: var(--muted); margin-top: 12px; max-width: 460px; }
+
+  h2 { margin: 40px 0 16px; font-size: 1.6rem; }
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+  .card { background: var(--panel); border-radius: 14px; padding: 22px; border-top: 4px solid var(--accent2); }
+  .card:nth-child(2) { border-top-color: var(--accent); }
+  .card:nth-child(3) { border-top-color: #ffd34d; }
+  .card .icon { font-size: 2rem; }
+  .card h3 { margin: 8px 0; }
+  .card p { color: var(--muted); font-size: .95rem; }
+  .card ul { margin: 10px 0 0 18px; color: var(--muted); font-size: .92rem; }
+
+  /* Games */
+  .game-picker { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px; }
+  .game-picker button, .btn {
+    background: var(--panel2); color: var(--text); border: 1px solid #333a60;
+    padding: 10px 18px; border-radius: 8px; cursor: pointer; font-size: 1rem;
+  }
+  .game-picker button:hover, .btn:hover { background: #2b3156; }
+  .game-picker button.active { background: var(--accent2); color: #001018; border-color: var(--accent2); font-weight: 700; }
+  .game { display: none; background: var(--panel); border-radius: 14px; padding: 24px; text-align: center; }
+  .game.active { display: block; }
+  .status { margin: 12px 0; min-height: 1.6em; color: var(--accent2); font-weight: 600; }
+
+  #ttt-board { display: grid; grid-template-columns: repeat(3, 100px); gap: 8px; justify-content: center; margin: 16px auto; }
+  .cell {
+    width: 100px; height: 100px; font-size: 2.6rem; font-weight: 800;
+    background: var(--panel2); border: none; border-radius: 10px; color: var(--text); cursor: pointer;
+  }
+  .cell:hover { background: #2b3156; }
+  .cell.x { color: var(--accent); }
+  .cell.o { color: var(--accent2); }
+
+  #guess-input { padding: 10px; font-size: 1rem; width: 120px; border-radius: 8px; border: 1px solid #333a60; background: var(--panel2); color: var(--text); text-align: center; }
+
+  canvas { background: #0a0d1a; border: 2px solid #333a60; border-radius: 10px; max-width: 100%; }
+
+  footer { text-align: center; color: var(--muted); padding: 24px; font-size: .9rem; }
+  @media (max-width: 560px) {
+    .hero h1 { font-size: 2rem; }
+    .tab-btn { padding: 14px 12px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <div class="logo">jaderoc</div>
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="home">Home</button>
+      <button class="tab-btn" data-tab="games">Games</button>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <!-- HOME TAB -->
+  <section id="home" class="tab-content active">
+    <div class="hero">
+      <img src="hamster.jpg" alt="A hamster wearing tiny sunglasses next to a computer monitor">
+      <div>
+        <h1>Hi, I'm <span>jaderoc</span></h1>
+        <p>Welcome to my little corner of the internet. I'm into cars, games and computers. Have a look around, then head to the Games tab and try to beat my high scores.</p>
+      </div>
+    </div>
+
+    <h2>My Interests</h2>
+    <div class="cards">
+      <div class="card">
+        <div class="icon">🏎️</div>
+        <h3>Cars</h3>
+        <p>I love everything on four wheels, from the sound of a good engine to how a car feels on a twisty road.</p>
+        <ul>
+          <li>Performance cars and tuning</li>
+          <li>Car shows and meets</li>
+          <li>Racing, from motorsport to sim racing</li>
+          <li>How engines, turbos and gearboxes work</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="icon">🎮</div>
+        <h3>Games</h3>
+        <p>Gaming is how I relax and how I compete. I'll try almost anything, but I have my favourites.</p>
+        <ul>
+          <li>Racing and driving games</li>
+          <li>Online multiplayer with friends</li>
+          <li>Shooters and action games</li>
+          <li>Retro classics that still hold up</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="icon">💻</div>
+        <h3>Computers</h3>
+        <p>I like knowing what's going on inside the machine, and making it do what I want.</p>
+        <ul>
+          <li>Building and upgrading PCs</li>
+          <li>Hardware: CPUs, GPUs, cooling</li>
+          <li>Learning to code and make websites</li>
+          <li>Tinkering, fixing and troubleshooting</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- GAMES TAB -->
+  <section id="games" class="tab-content">
+    <h2 style="margin-top:0">Games Arcade</h2>
+    <div class="game-picker">
+      <button class="active" data-game="ttt">Tic-Tac-Toe</button>
+      <button data-game="guess">Guess the Number</button>
+      <button data-game="snake">Snake</button>
+    </div>
+
+    <!-- Tic-Tac-Toe -->
+    <div id="ttt" class="game active">
+      <h3>Tic-Tac-Toe</h3>
+      <p>Two players, taking turns. X goes first.</p>
+      <div id="ttt-board"></div>
+      <div class="status" id="ttt-status"></div>
+      <button class="btn" id="ttt-reset">New Game</button>
+    </div>
+
+    <!-- Guess the number -->
+    <div id="guess" class="game">
+      <h3>Guess the Number</h3>
+      <p>I'm thinking of a number between 1 and 100.</p>
+      <p style="margin-top:14px">
+        <input type="number" id="guess-input" min="1" max="100" placeholder="1-100">
+        <button class="btn" id="guess-btn">Guess</button>
+      </p>
+      <div class="status" id="guess-status"></div>
+      <button class="btn" id="guess-reset">New Game</button>
+    </div>
+
+    <!-- Snake -->
+    <div id="snake" class="game">
+      <h3>Snake</h3>
+      <p>Use the arrow keys or WASD. On a phone, use the buttons below.</p>
+      <canvas id="snake-canvas" width="400" height="400"></canvas>
+      <div class="status" id="snake-status">Press Start to play</div>
+      <button class="btn" id="snake-start">Start</button>
+      <div style="margin-top:12px; display:grid; grid-template-columns:repeat(3,60px); gap:6px; justify-content:center;">
+        <span></span><button class="btn" data-dir="up">▲</button><span></span>
+        <button class="btn" data-dir="left">◀</button><button class="btn" data-dir="down">▼</button><button class="btn" data-dir="right">▶</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>© <span id="year"></span> jaderoc. Built by hand and hosted on Netlify.</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  /* ---------- Tabs ---------- */
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById(btn.dataset.tab).classList.add('active');
+      if (btn.dataset.tab !== 'games') snakeStop();
+    });
+  });
+
+  /* ---------- Game picker ---------- */
+  document.querySelectorAll('.game-picker button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.game-picker button').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.game').forEach(g => g.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById(btn.dataset.game).classList.add('active');
+      if (btn.dataset.game !== 'snake') snakeStop();
+    });
+  });
+
+  /* ---------- Tic-Tac-Toe ---------- */
+  const tttBoard = document.getElementById('ttt-board');
+  const tttStatus = document.getElementById('ttt-status');
+  let tttCells, tttTurn, tttOver;
+  const lines = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+
+  function tttInit() {
+    tttBoard.innerHTML = '';
+    tttCells = Array(9).fill('');
+    tttTurn = 'X'; tttOver = false;
+    tttStatus.textContent = "X's turn";
+    for (let i = 0; i < 9; i++) {
+      const c = document.createElement('button');
+      c.className = 'cell';
+      c.addEventListener('click', () => tttPlay(i, c));
+      tttBoard.appendChild(c);
+    }
+  }
+  function tttPlay(i, el) {
+    if (tttOver || tttCells[i]) return;
+    tttCells[i] = tttTurn;
+    el.textContent = tttTurn;
+    el.classList.add(tttTurn.toLowerCase());
+    const win = lines.find(l => l.every(k => tttCells[k] === tttTurn));
+    if (win) { tttStatus.textContent = tttTurn + ' wins! 🎉'; tttOver = true; return; }
+    if (tttCells.every(Boolean)) { tttStatus.textContent = "It's a draw."; tttOver = true; return; }
+    tttTurn = tttTurn === 'X' ? 'O' : 'X';
+    tttStatus.textContent = tttTurn + "'s turn";
+  }
+  document.getElementById('ttt-reset').addEventListener('click', tttInit);
+  tttInit();
+
+  /* ---------- Guess the number ---------- */
+  let secret, tries;
+  const gStatus = document.getElementById('guess-status');
+  const gInput = document.getElementById('guess-input');
+  function guessInit() {
+    secret = Math.floor(Math.random() * 100) + 1;
+    tries = 0;
+    gStatus.textContent = '';
+    gInput.value = '';
+  }
+  function guessTry() {
+    const n = parseInt(gInput.value, 10);
+    if (isNaN(n) || n < 1 || n > 100) { gStatus.textContent = 'Enter a number from 1 to 100.'; return; }
+    tries++;
+    if (n === secret) gStatus.textContent = `Correct! You got it in ${tries} ${tries === 1 ? 'try' : 'tries'} 🎉`;
+    else gStatus.textContent = (n < secret ? 'Too low' : 'Too high') + ` (tries: ${tries})`;
+    gInput.select();
+  }
+  document.getElementById('guess-btn').addEventListener('click', guessTry);
+  gInput.addEventListener('keydown', e => { if (e.key === 'Enter') guessTry(); });
+  document.getElementById('guess-reset').addEventListener('click', guessInit);
+  guessInit();
+
+  /* ---------- Snake ---------- */
+  const canvas = document.getElementById('snake-canvas');
+  const ctx = canvas.getContext('2d');
+  const sStatus = document.getElementById('snake-status');
+  const SIZE = 20, COUNT = canvas.width / SIZE;
+  let snake, dir, nextDir, food, score, timer = null;
+
+  function snakeInit() {
+    snake = [{x: 10, y: 10}, {x: 9, y: 10}, {x: 8, y: 10}];
+    dir = {x: 1, y: 0}; nextDir = dir; score = 0;
+    placeFood();
+    sStatus.textContent = 'Score: 0';
+    draw();
+  }
+  function placeFood() {
+    do {
+      food = {x: Math.floor(Math.random() * COUNT), y: Math.floor(Math.random() * COUNT)};
+    } while (snake.some(s => s.x === food.x && s.y === food.y));
+  }
+  function draw() {
+    ctx.fillStyle = '#0a0d1a';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = '#ff4d4d';
+    ctx.fillRect(food.x * SIZE + 2, food.y * SIZE + 2, SIZE - 4, SIZE - 4);
+    snake.forEach((s, i) => {
+      ctx.fillStyle = i === 0 ? '#4dd0ff' : '#2a9fc4';
+      ctx.fillRect(s.x * SIZE + 1, s.y * SIZE + 1, SIZE - 2, SIZE - 2);
+    });
+  }
+  function tick() {
+    dir = nextDir;
+    const head = {x: snake[0].x + dir.x, y: snake[0].y + dir.y};
+    const hitWall = head.x < 0 || head.y < 0 || head.x >= COUNT || head.y >= COUNT;
+    const hitSelf = snake.some(s => s.x === head.x && s.y === head.y);
+    if (hitWall || hitSelf) {
+      snakeStop();
+      sStatus.textContent = `Game over! Score: ${score}. Press Start to try again.`;
+      return;
+    }
+    snake.unshift(head);
+    if (head.x === food.x && head.y === food.y) {
+      score++;
+      sStatus.textContent = 'Score: ' + score;
+      placeFood();
+    } else {
+      snake.pop();
+    }
+    draw();
+  }
+  function snakeStart() {
+    snakeStop();
+    snakeInit();
+    timer = setInterval(tick, 120);
+  }
+  function snakeStop() {
+    if (timer) { clearInterval(timer); timer = null; }
+  }
+  function setDir(name) {
+    const d = {up: {x:0,y:-1}, down: {x:0,y:1}, left: {x:-1,y:0}, right: {x:1,y:0}}[name];
+    if (!d) return;
+    if (d.x === -dir.x && d.y === -dir.y) return; // no reversing
+    nextDir = d;
+  }
+  document.getElementById('snake-start').addEventListener('click', snakeStart);
+  document.querySelectorAll('[data-dir]').forEach(b => b.addEventListener('click', () => setDir(b.dataset.dir)));
+  document.addEventListener('keydown', e => {
+    const map = {ArrowUp:'up', ArrowDown:'down', ArrowLeft:'left', ArrowRight:'right', w:'up', s:'down', a:'left', d:'right'};
+    const name = map[e.key];
+    if (name && timer) { e.preventDefault(); setDir(name); }
+  });
+  snakeInit();
+</script>
+</body>
+</html>
